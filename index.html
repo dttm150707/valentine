@@ -13,10 +13,10 @@
         // LOGIC CÂU HỎI TROLL
         let currentStep = 0;
         const questions = [
-            { q: "Chào em, em đang rảnh đúng không?", y: "Đúng dợ 😍", n: "Hổng rảnh 😜" },
-            { q: "Em thấy người gửi cái này cho em có đáng iu không?", y: "Quá đáng iu", n: "Hơi đáng ghét 🤫" },
-            { q: "Thế em có yêu tui không nè?", y: "Yêu ơi là yêu ❤️", n: "Không nha 🙄" },
-            { q: "Em sẽ không bao giờ bỏ rơi tui chứ?", y: "Hứa luôn 🙆‍♀️", n: "Hên xui 🤡" }
+            { q: 'Chào em, em đang rảnh đúng không?', y: 'Đúng dợ 😍', n: 'Hổng rảnh 😜' },
+            { q: 'Em thấy người gửi cái này cho em có đáng iu không?', y: 'Quá đáng iu', n: 'Hơi đáng ghét 🤫' },
+            { q: 'Thế em có yêu tui không nè?', y: 'Yêu ơi là yêu ❤️', n: 'Không nha 🙄' },
+            { q: 'Em sẽ không bao giờ bỏ rơi tui chứ?', y: 'Hứa luôn 🙆‍♀️', n: 'Hên xui 🤡' }
         ];
 
         function nextQuestion() {
@@ -57,7 +57,7 @@
             cards.forEach((imgUrl) => {
                 const card = document.createElement('div');
                 card.classList.add('card');
-                card.innerHTML = <div class="card-front">?</div><div class="card-back"><img src="${imgUrl}"></div>;
+                card.innerHTML = '<div class="card-front">?</div><div class="card-back"><img src="' + imgUrl + '"></div>';
                 card.onclick = () => {
                     if (flippedCards.length < 2 && !card.classList.contains('flipped')) {
                         card.classList.add('flipped');
@@ -81,6 +81,8 @@
                 };
                 grid.appendChild(card);
             });
-        }
+        } 
     </script>
+</body>
+</html>
 
