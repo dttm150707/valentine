@@ -1,0 +1,85 @@
+<script>
+        const myImages = [
+            'https://i.postimg.cc/NFH9BcK8/70d1cc0f-11f6-43bb-9a95-5eb1094f79f4.jpg=Anh1',
+            'https://i.postimg.cc/6p9LKMXq/8fdfca70-266f-483c-ae49-5e7c60db1303.jpg=Anh2',
+            'https://i.postimg.cc/gcVZ034X/57595901-b3ac-45c3-8d86-e7bab104bdeb.jpg=Anh3',
+            'https://i.postimg.cc/7hwbzQXD/0cb54b55-3af0-4a19-bfb1-4429781c0cf8.jpg=Anh4',
+            'https://i.postimg.cc/zGg5JFSd/caa38cee-fb67-4b15-bbcd-36a366b969f0.jpg=Anh5',
+            'https://i.postimg.cc/6Q6XdxxM/2b227bcc-b9a7-4a58-bbb7-25ae66549192.jpg=Anh6',
+            'https://i.postimg.cc/QN1yxYRb/48e2543c-c20d-4749-bf79-d6c8c61decac.jpg=Anh7',
+            'https://i.postimg.cc/fW1S5Byn/9c9f1545-7c8e-4770-8648-f57221fe01b4.jpg=Anh8'  
+        ];
+
+        // LOGIC CÂU HỎI TROLL
+        let currentStep = 0;
+        const questions = [
+            { q: "Chào em, em đang rảnh đúng không?", y: "Đúng dợ 😍", n: "Hổng rảnh 😜" },
+            { q: "Em thấy người gửi cái này cho em có đáng iu không?", y: "Quá đáng iu", n: "Hơi đáng ghét 🤫" },
+            { q: "Thế em có yêu tui không nè?", y: "Yêu ơi là yêu ❤️", n: "Không nha 🙄" },
+            { q: "Em sẽ không bao giờ bỏ rơi tui chứ?", y: "Hứa luôn 🙆‍♀️", n: "Hên xui 🤡" }
+        ];
+
+        function nextQuestion() {
+            currentStep++;
+            if (currentStep < questions.length) {
+                document.getElementById('questionText').innerText = questions[currentStep].q;
+                document.getElementById('yesBtn').innerText = questions[currentStep].y;
+                document.getElementById('noBtn').innerText = questions[currentStep].n;
+                const noBtn = document.getElementById('noBtn');
+                noBtn.style.position = 'relative';
+                noBtn.style.left = 'auto'; noBtn.style.top = 'auto';
+            } else { startMemoryGame(); }
+        }
+
+        function moveNo() {
+            const noBtn = document.getElementById('noBtn');
+            const container = document.getElementById('main-box');
+            const maxX = container.clientWidth - noBtn.clientWidth - 20;
+            const maxY = container.clientHeight - noBtn.clientHeight - 20;
+            noBtn.style.position = 'absolute';
+            noBtn.style.left = Math.floor(Math.random() * maxX) + 'px';
+            noBtn.style.top = Math.floor(Math.random() * maxY) + 'px';
+        }
+
+        // LOGIC GAME LẬT HÌNH (Dùng myImages)
+        function startMemoryGame() {
+            document.getElementById('question-section').style.display = 'none';
+            document.getElementById('memory-game').style.display = 'block';
+            
+            let cards = [...myImages, ...myImages]; // Gọi đúng mảng ảnh thật ở đây
+            cards.sort(() => Math.random() - 0.5);
+            
+            const grid = document.getElementById('grid');
+            grid.innerHTML = '';
+            let flippedCards = [];
+            let matchedCount = 0;
+
+            cards.forEach((imgUrl) => {
+                const card = document.createElement('div');
+                card.classList.add('card');
+                card.innerHTML = <div class="card-front">?</div><div class="card-back"><img src="${imgUrl}"></div>;
+                card.onclick = () => {
+                    if (flippedCards.length < 2 && !card.classList.contains('flipped')) {
+                        card.classList.add('flipped');
+                        flippedCards.push({card, imgUrl});
+                        if (flippedCards.length === 2) {
+                            setTimeout(() => {
+                                if (flippedCards[0].imgUrl === flippedCards[1].imgUrl) {
+                                    matchedCount++;
+                                    if (matchedCount === myImages.length) {
+                                        document.getElementById('memory-game').style.display = 'none';
+                                        document.getElementById('final-msg').style.display = 'block';
+                                    }
+                                } else {
+                                    flippedCards[0].card.classList.remove('flipped');
+                                    flippedCards[1].card.classList.remove('flipped');
+                                }
+                                flippedCards = [];
+                            }, 600);
+                        }
+                    }
+                };
+                grid.appendChild(card);
+            });
+        }
+    </script>
