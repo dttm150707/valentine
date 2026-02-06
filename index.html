@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Món quà dành cho em ❤️</title>
+    <title>Gửi người tui yêu ❤️</title>
     <style>
         body { background: #fff0f3; margin: 0; font-family: 'Arial', sans-serif; overflow: hidden; display: flex; justify-content: center; align-items: center; height: 100vh; }
-        .container { text-align: center; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 90%; max-width: 350px; min-height: 320px; position: relative; }
-        h2 { color: #ff4d6d; font-size: 1.3rem; margin-bottom: 40px; line-height: 1.4; min-height: 60px; }
-        .btn-group { display: flex; justify-content: center; gap: 15px; height: 50px; position: relative; width: 100%; }
-        .btn { padding: 10px 25px; font-size: 1rem; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; transition: all 0.2s ease; z-index: 10; }
-        #yesBtn { background: #ff4d6d; color: white; position: relative; }
-        #noBtn { background: #6c757d; color: white; position: absolute; right: 40px; }
-        #memory-game { display: none; width: 100%; }
-        .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 20px; }
-        .card { height: 75px; background: #ffb3c1; border-radius: 8px; cursor: pointer; position: relative; transform-style: preserve-3d; transition: transform 0.5s; }
+        .container { text-align: center; background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 90%; max-width: 350px; min-height: 350px; position: relative; }
+        h2 { color: #ff4d6d; font-size: 1.2rem; margin-bottom: 30px; line-height: 1.5; }
+        .btn-group { display: flex; justify-content: center; gap: 15px; height: 50px; position: relative; }
+        .btn { padding: 10px 20px; font-size: 1rem; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        #yesBtn { background: #ff4d6d; color: white; }
+        #noBtn { background: #6c757d; color: white; position: absolute; right: 20px; }
+        #memory-game { display: none; }
+        .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 20px; }
+        .card { height: 70px; background: #ffb3c1; border-radius: 10px; cursor: pointer; position: relative; transform-style: preserve-3d; transition: transform 0.5s; }
         .card.flipped { transform: rotateY(180deg); }
-        .card-front, .card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; align-items: center; justify-content: center; border-radius: 8px; }
-        .card-front { font-size: 1.5rem; color: white; }
-        .card-back { background: #eee; transform: rotateY(180deg); overflow: hidden; border: 1px solid #ffb3c1; }
-        .card-back img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .card-front, .card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+        .card-front { color: white; font-weight: bold; font-size: 1.5rem; }
+        .card-back { background: white; transform: rotateY(180deg); overflow: hidden; }
+        .card-back img { width: 100%; height: 100%; object-fit: cover; }
         #final-msg { display: none; color: #ff4d6d; }
     </style>
 </head>
@@ -30,113 +30,97 @@
             <h2 id="questionText">Chào em, em đang rảnh đúng không?</h2>
             <div class="btn-group">
                 <button class="btn" id="yesBtn" onclick="nextQuestion()">Đúng dợ 😍</button>
-                <button class="btn" id="noBtn" onmouseover="moveNo()" onclick="moveNo()">Hổng rảnh 😜</button>
+                <button class="btn" id="noBtn" onmouseover="moveNo()">Hổng rảnh 😜</button>
             </div>
         </div>
 
         <div id="memory-game">
-            <h2 style="font-size: 1rem;">Tìm cặp ảnh kỷ niệm của tụi mình nhé! ❤️</h2>
+            <h2 style="font-size: 1rem;">Tìm cặp ảnh kỷ niệm nhé! ❤️</h2>
             <div class="grid" id="grid"></div>
         </div>
 
         <div id="final-msg">
-            <h1>Yêu Em Nhất! ❤️</h1>
-            <p>Em có trí nhớ siêu đỉnh luôn á!</p>
-            <button onclick="location.reload()" style="background:#ff4d6d; color:white; border:none; padding:10px 20px; border-radius:50px; cursor:pointer;">Chơi lại</button>
+            <h2>Yêu Em Nhất Quả Đất! ❤️</h2>
+            <button onclick="location.reload()" style="background:#ff4d6d; color:white; border:none; padding:10px 20px; border-radius:50px;">Chơi lại</button>
         </div>
     </div>
 
     <script>
-        // Các link ảnh đã được kiểm tra định dạng
+        // TUI DÙNG LINK ẢNH MẪU CHUẨN ĐỂ ÔNG TEST TRƯỚC
         const myImages = [
-            'https://i.postimg.cc/NFH9BcK8/70d1cc0f-11f6-43bb-9a95-5eb1094f79f4.jpg',
-            'https://i.postimg.cc/6p9LKMXq/8fdfca70-266f-483c-ae49-5e7c60db1303.jpg',
-            'https://i.postimg.cc/gcVZ034X/57595901-b3ac-45c3-8d86-e7bab104bdeb.jpg',
-            'https://i.postimg.cc/7hwbzQXD/0cb54b55-3af0-4a19-bfb1-4429781c0cf8.jpg',
-            'https://i.postimg.cc/zGg5JF5d/caa38cee-fb67-4b15-bbcd-36a366b969f0.jpg',
-            'https://i.postimg.cc/6Q6XdXxM/2b227bcc-b9a7-4a58-bbb7-25ae66549192.jpg',
-            'https://i.postimg.cc/QN1yxYRb/48e2543c-c20d-4749-bf79-d6c8c61decac.jpg',
-            'https://i.postimg.cc/fW1S5Byn/9c9f1545-7c8e-4770-8648-f57221fe01b4.jpg'
+            'https://picsum.photos/id/10/200/200',
+            'https://picsum.photos/id/20/200/200',
+            'https://picsum.photos/id/30/200/200',
+            'https://picsum.photos/id/40/200/200',
+            'https://picsum.photos/id/50/200/200',
+            'https://picsum.photos/id/60/200/200',
+            'https://picsum.photos/id/70/200/200',
+            'https://picsum.photos/id/80/200/200'
         ];
 
-        let currentStep = 0;
-        const questions = [
+        let step = 0;
+        const qs = [
             { q: 'Chào em, em đang rảnh đúng không?', y: 'Đúng dợ 😍', n: 'Hổng rảnh 😜' },
-            { q: 'Em thấy tui có đáng iu không?', y: 'Quá đáng iu 😎', n: 'Hơi đáng ghét 🤫' },
-            { q: 'Thế em có yêu tui không nè?', y: 'Yêu ơi là yêu ❤️', n: 'Không nha 🙄' },
-            { q: 'Em sẽ không bao giờ bỏ rơi tui chứ?', y: 'Hứa luôn 🙆‍♀️', n: 'Hên xui 🤡' }
+            { q: 'Em thấy tui có đáng iu không?', y: 'Rất đáng iu 😎', n: 'Hơi ghét 🤫' },
+            { q: 'Thế em có yêu tui không nè?', y: 'Yêu ơi là yêu ❤️', n: 'Không nha 🙄' }
         ];
 
         function nextQuestion() {
-            currentStep++;
-            if (currentStep < questions.length) {
-                document.getElementById('questionText').innerText = questions[currentStep].q;
-                document.getElementById('yesBtn').innerText = questions[currentStep].y;
-                document.getElementById('noBtn').innerText = questions[currentStep].n;
-                const noBtn = document.getElementById('noBtn');
-                noBtn.style.position = 'relative';
-                noBtn.style.left = 'auto'; noBtn.style.top = 'auto'; noBtn.style.right = 'auto';
+            step++;
+            if (step < qs.length) {
+                document.getElementById('questionText').innerText = qs[step].q;
+                document.getElementById('yesBtn').innerText = qs[step].y;
+                document.getElementById('noBtn').innerText = qs[step].n;
+                const nb = document.getElementById('noBtn');
+                nb.style.position = 'relative'; nb.style.left = 'auto'; nb.style.top = 'auto';
             } else {
-                startMemoryGame();
+                document.getElementById('question-section').style.display = 'none';
+                document.getElementById('memory-game').style.display = 'block';
+                initGame();
             }
         }
 
         function moveNo() {
-            const noBtn = document.getElementById('noBtn');
-            const container = document.getElementById('main-box');
-            const maxX = container.clientWidth - noBtn.clientWidth - 20;
-            const maxY = container.clientHeight - noBtn.clientHeight - 20;
-            noBtn.style.position = 'absolute';
-            noBtn.style.left = Math.floor(Math.random() * maxX) + 'px';
-            noBtn.style.top = Math.floor(Math.random() * maxY) + 'px';
+            const nb = document.getElementById('noBtn');
+            nb.style.position = 'absolute';
+            nb.style.left = Math.random() * 200 + 'px';
+            nb.style.top = Math.random() * 200 + 'px';
         }
 
-        function startMemoryGame() {
-            document.getElementById('question-section').style.display = 'none';
-            document.getElementById('memory-game').style.display = 'block';
-            let cards = [...myImages, ...myImages];
-            cards.sort(() => Math.random() - 0.5);
+        function initGame() {
+            let cards = [...myImages, ...myImages].sort(() => Math.random() - 0.5);
             const grid = document.getElementById('grid');
-            grid.innerHTML = '';
-            let flippedCards = [];
-            let matchedCount = 0;
+            let flipped = [];
+            let matched = 0;
 
-            cards.forEach((imgUrl) => {
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.innerHTML = `
-                    <div class="card-front">?</div>
-                    <div class="card-back"><img src="${imgUrl}" loading="lazy"></div>
-                `;
-                card.onclick = function() {
-                    if (flippedCards.length < 2 && !card.classList.contains('flipped')) {
-                        card.classList.add('flipped');
-                        flippedCards.push({card, imgUrl});
-                        if (flippedCards.length === 2) {
+            cards.forEach(url => {
+                const c = document.createElement('div');
+                c.className = 'card';
+                c.innerHTML = <div class="card-front">?</div><div class="card-back"><img src="${url}"></div>;
+                c.onclick = () => {
+                    if (flipped.length < 2 && !c.classList.contains('flipped')) {
+                        c.classList.add('flipped');
+                        flipped.push({c, url});
+                        if (flipped.length === 2) {
                             setTimeout(() => {
-                                if (flippedCards[0].imgUrl === flippedCards[1].imgUrl) {
-                                    matchedCount++;
-                                    if (matchedCount === myImages.length) {
+                                if (flipped[0].url === flipped[1].url) {
+                                    matched++;
+                                    if (matched === 😎 {
                                         document.getElementById('memory-game').style.display = 'none';
                                         document.getElementById('final-msg').style.display = 'block';
                                     }
                                 } else {
-                                    flippedCards[0].card.classList.remove('flipped');
-                                    flippedCards[1].card.classList.remove('flipped');
+                                    flipped[0].c.classList.remove('flipped');
+                                    flipped[1].c.classList.remove('flipped');
                                 }
-                                flippedCards = [];
+                                flipped = [];
                             }, 600);
                         }
                     }
                 };
-                grid.appendChild(card);
+                grid.appendChild(c);
             });
         }
     </script>
 </body>
 </html>
-
-
-
-
-
