@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Món quà cho em ❤️</title>
+    <title>Dành cho người tui yêu ❤️</title>
     <style>
         body { background: #fff0f3; margin: 0; font-family: 'Arial', sans-serif; overflow: hidden; display: flex; justify-content: center; align-items: center; height: 100vh; }
         .container { text-align: center; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 90%; max-width: 350px; min-height: 300px; position: relative; }
@@ -47,6 +47,7 @@
     </div>
 
     <script>
+        // Mảng ảnh kỷ niệm (Đã làm sạch link của ông)
         const myImages = [
             'https://i.postimg.cc/NFH9BcK8/70d1cc0f-11f6-43bb-9a95-5eb1094f79f4.jpg',
             'https://i.postimg.cc/6p9LKMXq/8fdfca70-266f-483c-ae49-5e7c60db1303.jpg',
@@ -66,33 +67,44 @@
             { q: 'Em sẽ không bao giờ bỏ rơi tui chứ?', y: 'Hứa luôn 🙆‍♀️', n: 'Hên xui 🤡' }
         ];
 
+        // Hàm chuyển câu hỏi
         function nextQuestion() {
             currentStep++;
             if (currentStep < questions.length) {
                 document.getElementById('questionText').innerText = questions[currentStep].q;
                 document.getElementById('yesBtn').innerText = questions[currentStep].y;
                 document.getElementById('noBtn').innerText = questions[currentStep].n;
+                
+                // Đưa nút Không về vị trí cũ để dễ bấm câu tiếp theo
                 const noBtn = document.getElementById('noBtn');
                 noBtn.style.position = 'relative';
-                noBtn.style.left = 'auto'; noBtn.style.top = 'auto';
-            } else { startMemoryGame(); }
+                noBtn.style.left = 'auto'; 
+                noBtn.style.top = 'auto';
+            } else {
+                startMemoryGame();
+            }
         }
 
+        // Hàm làm nút "Không" nhảy
         function moveNo() {
             const noBtn = document.getElementById('noBtn');
             const container = document.getElementById('main-box');
             const maxX = container.clientWidth - noBtn.clientWidth - 20;
             const maxY = container.clientHeight - noBtn.clientHeight - 20;
+            
             noBtn.style.position = 'absolute';
             noBtn.style.left = Math.floor(Math.random() * maxX) + 'px';
             noBtn.style.top = Math.floor(Math.random() * maxY) + 'px';
         }
 
+        // Khởi tạo game lật hình
         function startMemoryGame() {
             document.getElementById('question-section').style.display = 'none';
             document.getElementById('memory-game').style.display = 'block';
+            
             let cards = [...myImages, ...myImages];
             cards.sort(() => Math.random() - 0.5);
+            
             const grid = document.getElementById('grid');
             grid.innerHTML = '';
             let flippedCards = [];
@@ -102,10 +114,12 @@
                 const card = document.createElement('div');
                 card.classList.add('card');
                 card.innerHTML = <div class="card-front">?</div><div class="card-back"><img src="${imgUrl}"></div>;
-                card.onclick = () => {
+                
+                card.onclick = function() {
                     if (flippedCards.length < 2 && !card.classList.contains('flipped')) {
                         card.classList.add('flipped');
                         flippedCards.push({card, imgUrl});
+                        
                         if (flippedCards.length === 2) {
                             setTimeout(() => {
                                 if (flippedCards[0].imgUrl === flippedCards[1].imgUrl) {
@@ -129,5 +143,7 @@
     </script>
 </body>
 </html>
+
+
 
 
