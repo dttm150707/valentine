@@ -3,15 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dành cho người tui yêu ❤️</title>
+    <title>Món quà cho người tui yêu ❤️</title>
     <style>
+        /* CSS: Làm cho giao diện đẹp và mượt */
         body { background: #fff0f3; margin: 0; font-family: 'Arial', sans-serif; overflow: hidden; display: flex; justify-content: center; align-items: center; height: 100vh; }
-        .container { text-align: center; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 90%; max-width: 350px; min-height: 300px; position: relative; }
+        .container { text-align: center; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 90%; max-width: 350px; min-height: 320px; position: relative; }
         h2 { color: #ff4d6d; font-size: 1.3rem; margin-bottom: 40px; line-height: 1.4; min-height: 60px; }
+        
+        /* Nút bấm */
         .btn-group { display: flex; justify-content: center; gap: 15px; height: 50px; position: relative; width: 100%; }
         .btn { padding: 10px 25px; font-size: 1rem; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; transition: all 0.2s ease; z-index: 10; }
         #yesBtn { background: #ff4d6d; color: white; position: relative; }
         #noBtn { background: #6c757d; color: white; position: absolute; right: 40px; }
+
+        /* Game lật hình */
         #memory-game { display: none; width: 100%; }
         .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 20px; }
         .card { height: 75px; background: #ffb3c1; border-radius: 8px; cursor: pointer; position: relative; transform-style: preserve-3d; transition: transform 0.5s; }
@@ -20,6 +25,8 @@
         .card-front { font-size: 1.2rem; color: white; font-weight: bold; }
         .card-back { background: white; transform: rotateY(180deg); overflow: hidden; }
         .card-back img { width: 100%; height: 100%; object-fit: cover; }
+        
+        /* Kết thúc */
         #final-msg { display: none; color: #ff4d6d; }
     </style>
 </head>
@@ -47,14 +54,14 @@
     </div>
 
     <script>
-        // Mảng ảnh kỷ niệm (Đã làm sạch link của ông)
+        // --- DANH SÁCH ẢNH ---
         const myImages = [
             'https://i.postimg.cc/NFH9BcK8/70d1cc0f-11f6-43bb-9a95-5eb1094f79f4.jpg',
             'https://i.postimg.cc/6p9LKMXq/8fdfca70-266f-483c-ae49-5e7c60db1303.jpg',
             'https://i.postimg.cc/gcVZ034X/57595901-b3ac-45c3-8d86-e7bab104bdeb.jpg',
             'https://i.postimg.cc/7hwbzQXD/0cb54b55-3af0-4a19-bfb1-4429781c0cf8.jpg',
-            'https://i.postimg.cc/zGg5JF5d/caa38cee-fb67-4b15-bbcd-36a366b969f0.jpg',
-            'https://i.postimg.cc/6Q6XdXxM/2b227bcc-b9a7-4a58-bbb7-25ae66549192.jpg',
+            'https://i.postimg.cc/zGg5JFSd/caa38cee-fb67-4b15-bbcd-36a366b969f0.jpg',
+            'https://i.postimg.cc/6Q6XdxxM/2b227bcc-b9a7-4a58-bbb7-25ae66549192.jpg',
             'https://i.postimg.cc/QN1yxYRb/48e2543c-c20d-4749-bf79-d6c8c61decac.jpg',
             'https://i.postimg.cc/fW1S5Byn/9c9f1545-7c8e-4770-8648-f57221fe01b4.jpg'
         ];
@@ -62,33 +69,37 @@
         let currentStep = 0;
         const questions = [
             { q: 'Chào em, em đang rảnh đúng không?', y: 'Đúng dợ 😍', n: 'Hổng rảnh 😜' },
-            { q: 'Em thấy người gửi cái này cho em có đáng iu không?', y: 'Quá đáng iu 😎', n: 'Hơi đáng ghét 🤫' },
+            { q: 'Em thấy tui có đáng iu không?', y: 'Quá đáng iu 😎', n: 'Hơi đáng ghét 🤫' },
             { q: 'Thế em có yêu tui không nè?', y: 'Yêu ơi là yêu ❤️', n: 'Không nha 🙄' },
             { q: 'Em sẽ không bao giờ bỏ rơi tui chứ?', y: 'Hứa luôn 🙆‍♀️', n: 'Hên xui 🤡' }
         ];
 
-        // Hàm chuyển câu hỏi
+        // Hàm xử lý khi ấn nút "Đúng dợ"
         function nextQuestion() {
             currentStep++;
             if (currentStep < questions.length) {
-                document.getElementById('questionText').innerText = questions[currentStep].q;
-                document.getElementById('yesBtn').innerText = questions[currentStep].y;
-                document.getElementById('noBtn').innerText = questions[currentStep].n;
+                // Đổi nội dung câu hỏi
+                document.getElementById('questionText').innerHTML = questions[currentStep].q;
+                document.getElementById('yesBtn').innerHTML = questions[currentStep].y;
+                document.getElementById('noBtn').innerHTML = questions[currentStep].n;
                 
-                // Đưa nút Không về vị trí cũ để dễ bấm câu tiếp theo
+                // Đưa nút "Không" về vị trí cũ
                 const noBtn = document.getElementById('noBtn');
                 noBtn.style.position = 'relative';
-                noBtn.style.left = 'auto'; 
+                noBtn.style.left = 'auto';
                 noBtn.style.top = 'auto';
+                noBtn.style.right = 'auto';
             } else {
+                // Hết câu hỏi thì chuyển sang game lật hình
                 startMemoryGame();
             }
         }
 
-        // Hàm làm nút "Không" nhảy
+        // Hàm làm nút "Không" chạy trốn
         function moveNo() {
             const noBtn = document.getElementById('noBtn');
             const container = document.getElementById('main-box');
+            
             const maxX = container.clientWidth - noBtn.clientWidth - 20;
             const maxY = container.clientHeight - noBtn.clientHeight - 20;
             
@@ -97,7 +108,7 @@
             noBtn.style.top = Math.floor(Math.random() * maxY) + 'px';
         }
 
-        // Khởi tạo game lật hình
+        // Logic Game lật hình
         function startMemoryGame() {
             document.getElementById('question-section').style.display = 'none';
             document.getElementById('memory-game').style.display = 'block';
@@ -113,7 +124,10 @@
             cards.forEach((imgUrl) => {
                 const card = document.createElement('div');
                 card.classList.add('card');
-                card.innerHTML = <div class="card-front">?</div><div class="card-back"><img src="${imgUrl}"></div>;
+                card.innerHTML = `
+                    <div class="card-front">?</div>
+                    <div class="card-back"><img src="${imgUrl}"></div>
+                `;
                 
                 card.onclick = function() {
                     if (flippedCards.length < 2 && !card.classList.contains('flipped')) {
@@ -143,6 +157,7 @@
     </script>
 </body>
 </html>
+
 
 
 
